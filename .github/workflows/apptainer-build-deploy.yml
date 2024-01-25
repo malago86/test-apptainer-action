@@ -8,7 +8,9 @@ on:
 jobs:
   build-test-container:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+        contents: write
+        packages: write
 
     container:
         image: quay.io/singularity/singularity:v3.8.1
