@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Container
         run: |
-           singularity build test-container.sif Apptainer
+           singularity build test-container.sif test.def
 
       - name: Login and Deploy Container
         run: |
