@@ -26,16 +26,16 @@ jobs:
         run: |
            singularity build ${{ github.event.repository.name }}.sif test.def
 
-      - name: Login and Deploy Container
-        run: |
-           echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
-           singularity push ${{ github.event.repository.name }}.sif oras://ghcr.io/${GITHUB_REPOSITORY}:${tag}
+    #   - name: Login and Deploy Container
+    #     run: |
+    #        echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+    #        singularity push ${{ github.event.repository.name }}.sif oras://ghcr.io/${GITHUB_REPOSITORY}:${tag}
 
     #   - name: 'Upload Artifact'
     #     uses: actions/upload-artifact@v4
     #     with:
-    #         name: test-artifact
-    #         path: test-container.sif
+    #         name: ${{ github.event.repository.name }}
+    #         path: ${{ github.event.repository.name }}.sif
     #         retention-days: 5
 
       - name: Release
