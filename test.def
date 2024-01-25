@@ -1,0 +1,11 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%post
+    apt-get -y update
+
+%environment
+    export LC_ALL=C
+
+%runscript
+    sh script.sh
