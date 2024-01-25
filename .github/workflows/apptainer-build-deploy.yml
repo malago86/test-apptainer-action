@@ -8,9 +8,7 @@ on:
 jobs:
   build-test-container:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    permissions: write-all
 
     container:
         image: quay.io/singularity/singularity:v3.8.1
@@ -24,9 +22,22 @@ jobs:
 
       - name: Build Container
         run: |
-           singularity build test-container.sif test.def
+           singularity build ${{ github.event.repository.name }}.sif test.def
 
       - name: Login and Deploy Container
         run: |
            echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
-           singularity push test-container.sif oras://ghcr.io/${GITHUB_REPOSITORY}:${tag}
+           singularity push ${{ github.event.repository.name }}.sif oras://ghcr.io/${GITHUB_REPOSITORY}:${tag}
+
+    #   - name: 'Upload Artifact'
+    #     uses: actions/upload-artifact@v4
+    #     with:
+    #         name: test-artifact
+    #         path: test-container.sif
+    #         retention-days: 5
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+            artifacts: "${{ github.event.repository.name }}.sif"
+            bodyFile: "README.md"
